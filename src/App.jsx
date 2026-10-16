@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Scoreboard from './components/Scoreboard'
 import Header from './components/Header'
 import CardGrid from './components/CardGrid'
+import WinModal from './components/WinModal'
 
 function shuffleArray(array){
 const copiedArray =  [...array]
@@ -32,7 +33,8 @@ function App() {
   const [ cardsArray, setCardsArray] = useState(
     () => shuffleArray(initialCards)
   )
-  
+
+  const hasWon = clickedCards.length === cardsArray.length
 
   function onCardClick(id) {
     if(!clickedCards.includes(id)){
@@ -51,15 +53,18 @@ function App() {
 
     setCardsArray(shuffleArray(cardsArray))
   }
-  
- 
 
+  function onButtonClick(){
+    setClickedCards([])
+    setCardsArray(shuffleArray(cardsArray))
+  }
 
   return (
     <div>
       <Header />
       <Scoreboard bestScore={bestScore} score={clickedCards.length}/>
       <CardGrid cardsArray={cardsArray} onCardClick={onCardClick}/>
+      {hasWon && <WinModal onButtonClick={onButtonClick}/>}
       
     </div>
   )
