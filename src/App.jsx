@@ -20,6 +20,19 @@ function App() {
   ];
 
   function onCardClick(id) {
+    if(!clickedCards.includes(id)){
+      
+
+      setClickedCards([...clickedCards, id])
+
+      if(clickedCards.length + 1 > bestScore){
+        setBestScore(clickedCards.length + 1)
+      }
+
+    }
+    else {
+      setClickedCards([])
+    }
     console.log(`The card with the id ${id} was clicked`)
   }
   
