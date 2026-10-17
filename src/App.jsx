@@ -30,6 +30,8 @@ const initialCards = [
 function App() {
   const [ bestScore, setBestScore ] = useState(0)
   const [ clickedCards, setClickedCards ] = useState([]) 
+  const [ hasLost,  setHasLost ] = useState(false)
+  const [ lostStreak, setLostStreak ] =  useState(0)
   const [ cardsArray, setCardsArray] = useState(
     () => shuffleArray(initialCards)
   )
@@ -41,6 +43,7 @@ function App() {
       
 
       setClickedCards([...clickedCards, id])
+      setHasLost(false)
 
       if(clickedCards.length + 1 > bestScore){
         setBestScore(clickedCards.length + 1)
@@ -48,13 +51,16 @@ function App() {
 
     }
     else {
+      setLostStreak(clickedCards.length)
       setClickedCards([])
+      setHasLost(true)
     }
 
     setCardsArray(shuffleArray(cardsArray))
   }
 
   function onButtonClick(){
+    setHasLost(false)
     setClickedCards([])
     setCardsArray(shuffleArray(cardsArray))
   }
@@ -62,7 +68,11 @@ function App() {
   return (
     <div>
       <Header />
-      <Scoreboard bestScore={bestScore} score={clickedCards.length}/>
+      <Scoreboard 
+        bestScore={bestScore} 
+        score={clickedCards.length} 
+        hasLost={hasLost}
+        lostStreak={lostStreak}/>
       <CardGrid cardsArray={cardsArray} onCardClick={onCardClick}/>
       {hasWon && <WinModal onButtonClick={onButtonClick}/>}
       
