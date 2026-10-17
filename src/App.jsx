@@ -34,7 +34,7 @@ function App() {
     () => shuffleArray(initialCards)
   )
 
-  const hasWon = clickedCards.length === cardsArray.length
+  const hasWon = cardsArray.length > 0 && clickedCards.length === cardsArray.length
 
   function onCardClick(id) {
     if(!clickedCards.includes(id)){
