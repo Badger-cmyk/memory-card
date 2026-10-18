@@ -1,16 +1,63 @@
-# React + Vite
+# **Memory Card Game**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# **Description**
 
-Currently, two official plugins are available:
+A football-themed memory game where players click on footballers' cards to earn points without selecting the same player twice. The cards shuffle after each selection, challenging players to remember which footballers they have already clicked.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Player images and data are fetched from TheSportsDB API.
 
-## React Compiler
+Built as part of The Odin Project's [curriculum](https://www.theodinproject.com/lessons/node-path-react-new-memory-card).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Built With
+- React
+- Vite
+- TheSportsDB API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run Locally
+
+1. Clone the repository:
+
+```bash
+   git clone https://github.com/Badger-cmyk/memory-card.git
+   cd memory-card
+```
+
+2. Install dependencies:
+
+```bash
+   npm install
+```
+
+3. Start the development server:
+
+```bash
+   npm run dev
+```
+
+4. Open the local address shown in your terminal (usually `http://localhost:5173`).
+
+Built with Node.js 22. No API key setup is needed, because the game uses TheSportsDB's free public key, which is shared with everyone and isn't a secret.
+
+To create a production build and preview it:
+
+```bash
+npm run build
+npm run preview
+```
+
+The free API tier is limited to 30 requests per minute. If the cards fail to load after many quick refreshes, wait a minute and try again.
+
+## What I Learned
+- How to fetch data from an external API using fetch using useEffect
+- How to handle multiple asynchronous requests using Promise.allSettled
+- How to manage game state using React's useState hook
+- How to use React's useRef hook to open the win dialog with the native dialog element's showModal method
+- How to pass data and event handlers between components using props
+- How to derive values like the score and the win condition from existing state instead of storing them separately
+- How to set an initial state value lazily, and how to clean up an effect so stale fetches don't update state
+- How to update state without mutating it, by copying arrays before changing them
+- How to render lists of components dynamically using map and unique keys
+- How to implement the Fisher-Yates shuffle algorithm to randomize cards
+- How to handle loading states, API errors, and missing player images
+- How to use conditional rendering to display different game states
