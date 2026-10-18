@@ -30,7 +30,11 @@ const playerNames = [
   'Joško Gvardiol', 
   'Lucas Bergvall',
   'Erling Haaland',
-  'Mohamed Salah'
+  'Mohamed Salah',
+  'Kylian Mbappe',
+  'Harry Kane',
+  'Pedro Gonzalez Lopez',
+  'Raphinha'
 ]
 
 const MIN_CARDS = 6
@@ -124,12 +128,12 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='app'>
       <Header />
 
-      {status === 'loading' && <p>Loading player cards...</p>}
+      {status === 'loading' && <p className='status-message'>Loading player cards...</p>}
 
-      {status === 'error' && <p>Could not load player cards. Please refresh the page.</p>}
+      {status === 'error' && <p className='status-message error-message'>Could not load player cards. Please refresh the page.</p>}
 
       {status === 'ready' && (
         <>

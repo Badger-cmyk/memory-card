@@ -4,7 +4,7 @@ function Card({id, name, image, onCardClick}) {
     const [ imageFailed, setImageFailed ] = useState(false)
 
     return (
-        <button onClick={() => onCardClick(id)}>
+        <button onClick={() => onCardClick(id)} className="card">
             {!imageFailed && (
                 <img src={image} alt="" onError={() => setImageFailed(true)}/>
             )}

@@ -1,0 +1,266 @@
+:root {
+  color-scheme: dark;
+
+  --bg: #0f1115;
+  --surface: #1a1d24;
+  --surface-raised: #2a2f3b;
+  --surface-hover: #222630;
+  --text: #f2efe6;
+  --muted: #a3a6af;
+  --accent: #d4af37;
+  --border: #343946;
+  --danger: #ff8c8c;
+  --accent-glow: rgb(212 175 55 / 22%);
+  --accent-dim: #4a3d14; 
+  --accent-soft: #a88a2e;
+
+  --gap: 16px;
+  --cols: 4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.app {
+  width: min(100% - 32px, 1100px);
+  margin-inline: auto;
+  padding-block: 32px 48px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.04em;
+}
+
+.header p {
+  margin: 0 auto;
+  max-width: 55ch;
+  color: var(--muted);
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.scoreboard-stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.scoreboard-stats > p {
+  margin: 0;
+  padding: 14px 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.loss-message {
+  margin: 0;
+  min-height: 1.5em; 
+  color: var(--danger);
+  text-align: center;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: var(--gap);
+}
+
+.card {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 12px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 50% 35%, var(--accent-glow) 0%, transparent 65%) padding-box,
+    linear-gradient(180deg, rgb(212 175 55 / 5%) 0%, var(--surface) 55%) padding-box,
+    linear-gradient(135deg, var(--accent-soft) 0%, var(--accent-dim) 100%) border-box;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 35%);
+
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 45%));
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.card span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    background:
+      radial-gradient(circle at 50% 35%, rgb(212 175 55 / 24%) 0%, transparent 70%) padding-box,
+      linear-gradient(180deg, rgb(212 175 55 / 9%) 0%, var(--surface) 60%) padding-box,
+      linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%) border-box;
+    box-shadow:
+      0 12px 26px rgb(0 0 0 / 50%),
+      0 0 14px rgb(212 175 55 / 18%);
+  }
+}
+
+.status-message {
+  text-align: center;
+  margin-block: 48px;
+  color: var(--muted);
+}
+
+.error-message {
+  color: var(--danger);
+}
+
+.win-modal {
+  width: calc(100% - 32px);
+  max-width: 420px;
+  padding: 32px;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.win-modal::backdrop {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.win-modal h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.win-modal button {
+  margin-top: 16px;
+  padding: 10px 20px;
+  color: var(--bg);
+  background-color: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.win-modal button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.footer {
+  margin-top: 48px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.footer a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 800px) {
+  :root {
+    --cols: 3;
+    --gap: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --cols: 2;
+    --gap: 10px;
+  }
+
+  .app {
+    width: calc(100% - 20px);
+    padding-block: 24px 32px;
+  }
+
+  .card {
+    padding: 12px 8px;
+  }
+
+  .scoreboard-stats {
+    gap: 8px;
+  }
+
+  .scoreboard-stats > p {
+    padding: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover,
+  .card:active {
+    transition: none;
+    transform: none;
+  }
+}
+

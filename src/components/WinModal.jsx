@@ -10,7 +10,7 @@ function WinModal({onButtonClick}) {
     }, [])
 
     return (
-            <dialog ref={dialogRef} onCancel={onButtonClick}>
+            <dialog ref={dialogRef} onCancel={onButtonClick} className="win-modal">
                 <h2>You Win!</h2>
                 <button onClick={onButtonClick}>Play Again</button>
             </dialog>

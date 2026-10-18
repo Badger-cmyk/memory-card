@@ -4,7 +4,7 @@ function CardGrid({onCardClick, cardsArray}) {
     
 
   return(
-    <div>
+    <div className="card-grid">
         {cardsArray.map((player) => (
             <Card key={player.id}
               name={player.name} 
