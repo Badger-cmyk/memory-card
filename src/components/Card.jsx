@@ -1,10 +1,14 @@
-function Card({id, name, onCardClick}) {
+import { useState } from "react"
+
+function Card({id, name, image, onCardClick}) {
+    const [ imageFailed, setImageFailed ] = useState(false)
 
     return (
         <button onClick={() => onCardClick(id)}>
-            <div>
-                <p>{name}</p>
-            </div>
+            {!imageFailed && (
+                <img src={image} alt="" onError={() => setImageFailed(true)}/>
+            )}
+            <span>{name}</span>
         </button>
     )
 }

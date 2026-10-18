@@ -5,8 +5,12 @@ function CardGrid({onCardClick, cardsArray}) {
 
   return(
     <div>
-        {cardsArray.map((item) => (
-            <Card key={item.id} name={item.name} onCardClick={onCardClick} id={item.id}/>
+        {cardsArray.map((player) => (
+            <Card key={player.id}
+              name={player.name} 
+              onCardClick={onCardClick} 
+              id={player.id}
+              image={player.image}/>
         ))}
     </div>
   )

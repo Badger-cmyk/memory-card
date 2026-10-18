@@ -3,7 +3,7 @@ function Scoreboard({bestScore, score, hasLost, lostStreak}) {
         <div>
             <p>Score: {score}</p>
             <p>Best Score: {bestScore}</p>
-            {hasLost && <p>You lost with a streak of {lostStreak}. Try Again</p>}
+            {hasLost && <p>You lost with a streak of {lostStreak}. Try Again!</p>}
         </div>
     )
 }

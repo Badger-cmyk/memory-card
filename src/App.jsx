@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Scoreboard from './components/Scoreboard'
 import Header from './components/Header'
@@ -18,23 +18,81 @@ return copiedArray
 
 }
 
-const initialCards = [
-  { id: 1, name: 'Item One', description: 'This is the first item.' },
-  { id: 2, name: 'Item Two', description: 'This is the second item.' },
-  { id: 3, name: 'Item Three', description: 'This is the third item.' },
-  { id: 4, name: 'Item Four', description: 'This is the fourth item.' },
-  { id: 5, name: 'Item Five', description: 'This is the fifth item.' },
-  { id: 6, name: 'Item Six', description: 'This is the sixth item.' },
+const playerNames = [
+  'Nico Paz',
+  'Paolo Maldini',
+  'Lionel Messi',
+  'Cristiano Ronaldo',
+  'Dominik Szoboszlai',
+  'Jude Bellingham',
+  'Kaka',
+  'Paulo Dybala',
+  'Joško Gvardiol', 
+  'Lucas Bergvall',
+  'Erling Haaland',
+  'Mohamed Salah'
 ]
+
+const MIN_CARDS = 6
+
+async function fetchPlayer(name) {
+  const searchName = name.replaceAll(' ', '_')
+  const response = await fetch(
+    `https://www.thesportsdb.com/api/v1/json/123/searchplayers.php?p=${searchName}`
+  )
+
+  if(!response.ok){
+    throw new Error(`Request failed with status ${response.status}`)
+  }
+
+  const data = await response.json()
+  const player = data.player?.[0]
+
+  if(!player?.strCutout) return null
+
+  return {
+    id: player.idPlayer,
+    name: player.strPlayer,
+    image: player.strCutout
+  }
+}
 
 function App() {
   const [ bestScore, setBestScore ] = useState(0)
   const [ clickedCards, setClickedCards ] = useState([]) 
   const [ hasLost,  setHasLost ] = useState(false)
   const [ lostStreak, setLostStreak ] =  useState(0)
-  const [ cardsArray, setCardsArray] = useState(
-    () => shuffleArray(initialCards)
-  )
+  const [ status, setStatus ] = useState('loading')
+  const [ cardsArray, setCardsArray] = useState([])
+
+  useEffect(() => {
+    let ignore = false
+
+    async function loadPlayers() {
+      const results = await Promise.allSettled(playerNames.map(fetchPlayer))
+
+      if(ignore) return
+
+      const players = results
+        .filter((result) => result.status === 'fulfilled' && result.value)
+        .map((result) => result.value)
+
+      if(players.length < MIN_CARDS) {
+        setStatus('error')
+        return
+      }
+
+      setCardsArray(shuffleArray(players))
+      setStatus('ready')
+    }
+
+    loadPlayers()
+
+    return () => {
+      ignore = true
+    }
+
+  }, [])
 
   const hasWon = cardsArray.length > 0 && clickedCards.length === cardsArray.length
 
@@ -68,12 +126,27 @@ function App() {
   return (
     <div>
       <Header />
-      <Scoreboard 
-        bestScore={bestScore} 
-        score={clickedCards.length} 
-        hasLost={hasLost}
-        lostStreak={lostStreak}/>
-      <CardGrid cardsArray={cardsArray} onCardClick={onCardClick}/>
+
+      {status === 'loading' && <p>Loading player cards...</p>}
+
+      {status === 'error' && <p>Could not load player cards. Please refresh the page.</p>}
+
+      {status === 'ready' && (
+        <>
+          <Scoreboard 
+            bestScore={bestScore} 
+            score={clickedCards.length} 
+            hasLost={hasLost}
+            lostStreak={lostStreak}
+          />
+
+          <CardGrid 
+            cardsArray={cardsArray} 
+            onCardClick={onCardClick}
+          />
+        </>
+      )}
+
       {hasWon && <WinModal onButtonClick={onButtonClick}/>}
       
     </div>
