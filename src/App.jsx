@@ -4,6 +4,7 @@ import Scoreboard from './components/Scoreboard'
 import Header from './components/Header'
 import CardGrid from './components/CardGrid'
 import WinModal from './components/WinModal'
+import Footer from './components/Footer'
 
 function shuffleArray(array){
 const copiedArray =  [...array]
@@ -152,7 +153,8 @@ function App() {
       )}
 
       {hasWon && <WinModal onButtonClick={onButtonClick}/>}
-      
+
+      <Footer />
     </div>
   )
   
