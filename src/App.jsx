@@ -58,6 +58,46 @@ async function fetchPlayer(name) {
   }
 }
 
+const CACHE_KEY = 'memory-card-players'
+const CACHE_MAX_AGE = 7 * 24 * 60 * 60 * 1000 
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if(!raw) return null
+
+    const cached = JSON.parse(raw)
+    const isFresh = Date.now() - cached.savedAt < CACHE_MAX_AGE
+    const sameList = 
+      JSON.stringify(cached.names) === JSON.stringify(playerNames)
+
+    if(!isFresh || !sameList || !Array.isArray(cached.players)) return null
+    if(cached.players.length < MIN_CARDS) return null
+
+    return cached.players
+  } catch {
+    return null
+  }
+}
+
+function writeCache(players) {
+  try {
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ savedAt: Date.now(), names: playerNames, players })
+    )
+  } catch {
+    //storage full or blocked, game still works
+  }
+}
+
+let inFlight = null
+
+function fetchAllPlayers() {
+  inFlight ??= Promise.allSettled(playerNames.map(fetchPlayer))
+  return inFlight
+}
+
 function App() {
   const [ bestScore, setBestScore ] = useState(0)
   const [ clickedCards, setClickedCards ] = useState([]) 
@@ -70,18 +110,31 @@ function App() {
     let ignore = false
 
     async function loadPlayers() {
-      const results = await Promise.allSettled(playerNames.map(fetchPlayer))
 
+      const cached = readCache()
+
+      if(cached) {
+        setCardsArray(shuffleArray(cached))
+        setStatus('ready')
+        return
+      }
+
+      const results = await fetchAllPlayers()
       if(ignore) return
 
       const players = results
-        .filter((result) => result.status === 'fulfilled' && result.value)
-        .map((result) => result.value)
+      .filter((result) => result.status === 'fulfilled' && result.value)
+      .map((result) => result.value)
 
-      if(players.length < MIN_CARDS) {
+      if(players.length < MIN_CARDS){
         setStatus('error')
         return
       }
+
+      const anyRequestFailed = results.some(
+        (result) => result.status === 'rejected'
+      )
+      if(!anyRequestFailed) writeCache(players)
 
       setCardsArray(shuffleArray(players))
       setStatus('ready')
@@ -92,7 +145,6 @@ function App() {
     return () => {
       ignore = true
     }
-
   }, [])
 
   const hasWon = cardsArray.length > 0 && clickedCards.length === cardsArray.length
