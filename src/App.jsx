@@ -24,17 +24,13 @@ const playerNames = [
   'Paolo Maldini',
   'Lionel Messi',
   'Cristiano Ronaldo',
-  'Dominik Szoboszlai',
   'Jude Bellingham',
   'Kaka',
   'Paulo Dybala',
-  'Joško Gvardiol', 
-  'Lucas Bergvall',
   'Erling Haaland',
   'Mohamed Salah',
   'Kylian Mbappe',
   'Harry Kane',
-  'Pedro Gonzalez Lopez',
   'Raphinha'
 ]
 
