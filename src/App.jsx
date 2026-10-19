@@ -130,7 +130,11 @@ function App() {
 
       {status === 'loading' && <p className='status-message'>Loading player cards...</p>}
 
-      {status === 'error' && <p className='status-message error-message'>Could not load player cards. Please refresh the page.</p>}
+      {status === 'error' && (
+        <p className='status-message error-message'>
+          Could not load player cards. The service may be busy, so please wait a minute and then reload the page once.
+        </p>
+      )}
 
       {status === 'ready' && (
         <>
