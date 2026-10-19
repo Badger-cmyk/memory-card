@@ -1,6 +1,6 @@
 # **Memory Card Game**
 
-# **Description**
+## **Description**
 
 A football-themed memory game where players click on footballers' cards to earn points without selecting the same player twice. The cards shuffle after each selection, challenging players to remember which footballers they have already clicked.
 
@@ -8,6 +8,8 @@ Player images and data are fetched from TheSportsDB API.
 
 Built as part of The Odin Project's [curriculum](https://www.theodinproject.com/lessons/node-path-react-new-memory-card).
 
+## Live Demo
+[Play the game](https://memory-card-chi-five.vercel.app/)
 
 ## Built With
 - React
@@ -46,10 +48,10 @@ npm run build
 npm run preview
 ```
 
-The free API tier is limited to 30 requests per minute. If the cards fail to load after many quick refreshes, wait a minute and try again.
+The free API tier is rate limited, so on a first visit the game may show fewer cards or ask you to try again in a minute.
 
 ## What I Learned
-- How to fetch data from an external API using fetch using useEffect
+- How to fetch data from an external API inside useEffect
 - How to handle multiple asynchronous requests using Promise.allSettled
 - How to manage game state using React's useState hook
 - How to use React's useRef hook to open the win dialog with the native dialog element's showModal method
